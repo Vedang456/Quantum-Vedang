@@ -1,11 +1,13 @@
 # Dockerfile for api/apiapp.py
-FROM bitnami/tensorflow:2.18.0
+FROM tensorflow/tensorflow:latest
 
 WORKDIR /app
 
 # Copy requirements and install
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --ignore-installed blinker==1.8.2 && \
+    pip install --no-cache-dir --break-system-packages -r requirements.txt
+
 
 # Copy the entire api/ directory
 COPY api/ api/
@@ -14,4 +16,4 @@ COPY api/ api/
 EXPOSE 7777
 
 # Run apiapp.py
-CMD ["/opt/bitnami/python/bin/python3", "api/apiapp.py"]
+CMD ["/usr/bin/python3", "api/apiapp.py"]
