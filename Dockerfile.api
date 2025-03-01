@@ -1,0 +1,17 @@
+# Dockerfile for api/apiapp.py
+FROM bitnami/tensorflow:2.18.0
+
+WORKDIR /app
+
+# Copy requirements and install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire api/ directory
+COPY api/ api/
+
+# Expose port 7777
+EXPOSE 7777
+
+# Run apiapp.py
+CMD ["/opt/bitnami/python/bin/python3", "api/apiapp.py"]

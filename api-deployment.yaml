@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quantum-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quantum-api
+  template:
+    metadata:
+      labels:
+        app: quantum-api
+    spec:
+      containers:
+      - name: quantum-api
+        image: vedanglimaye/quantum-api:latest
+        ports:
+        - containerPort: 7777
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quantum-api-service
+spec:
+  selector:
+    app: quantum-api
+  ports:
+  - port: 7777
+    targetPort: 7777
+  type: LoadBalancer

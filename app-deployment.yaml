@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quantum-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quantum-app
+  template:
+    metadata:
+      labels:
+        app: quantum-app
+    spec:
+      containers:
+      - name: quantum-app
+        image: vedanglimaye/quantum-app:latest
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quantum-app-service
+spec:
+  selector:
+    app: quantum-app
+  ports:
+  - port: 5000
+    targetPort: 5000
+  type: LoadBalancer
