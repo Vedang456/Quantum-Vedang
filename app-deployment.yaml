@@ -17,6 +17,13 @@ spec:
         image: vedanglimaye/quantum-app:latest
         ports:
         - containerPort: 5000
+        resources:
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+          limits:
+            cpu: "2"
+            memory: "4Gi"
 ---
 apiVersion: v1
 kind: Service
@@ -29,3 +36,5 @@ spec:
   - port: 5000
     targetPort: 5000
   type: LoadBalancer
+
+

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: quantum-api
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: quantum-api
@@ -17,6 +17,13 @@ spec:
         image: vedanglimaye/quantum-api:latest
         ports:
         - containerPort: 7777
+        resources:
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+          limits:
+            cpu: "2"
+            memory: "4Gi"
 ---
 apiVersion: v1
 kind: Service
