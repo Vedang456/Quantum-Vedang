@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: quantum-api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: quantum-api
