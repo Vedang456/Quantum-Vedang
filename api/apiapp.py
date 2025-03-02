@@ -5,6 +5,8 @@ import numpy as np
 from functools import wraps
 import time
 import logging
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
@@ -18,6 +20,13 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 quantum_api = None
+
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"]
+)
+
 
 def get_api():
     global quantum_api
@@ -44,6 +53,7 @@ def require_api_key(f):
     return decorated
 
 @app.route('/api/auth', methods=['POST'])
+@limiter.limit("10 per minute")
 def authenticate():
     try:
         api_key = request.json.get('api_key')
@@ -63,6 +73,7 @@ def authenticate():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/api/process-signal', methods=['POST'])
+@limiter.limit("10 per minute")
 @require_api_key
 def process_signal():
     try:
@@ -75,6 +86,7 @@ def process_signal():
         return jsonify({'status': 'error', 'message': str(e)}), 400
 
 @app.route('/api/detect-anomalies', methods=['POST'])
+@limiter.limit("10 per minute")
 @require_api_key
 def detect_anomalies():
     try:
@@ -95,6 +107,7 @@ def detect_anomalies():
         return jsonify({'status': 'error', 'message': str(e)}), 400
 
 @app.route('/api/encrypt', methods=['POST'])
+@limiter.limit("10 per minute")
 @require_api_key
 def encrypt_data():
     try:
@@ -110,6 +123,7 @@ def encrypt_data():
         return jsonify({'status': 'error', 'message': str(e)}), 400
 
 @app.route('/api/quantum-intelligence', methods=['POST'])
+@limiter.limit("10 per minute")
 @require_api_key
 def quantum_intelligence_endpoint():
     try:
@@ -134,6 +148,7 @@ def quantum_intelligence_endpoint():
         return jsonify({'status': 'error', 'message': str(e)}), 400
 
 @app.route('/api/metrics', methods=['GET'])
+@limiter.limit("10 per minute")
 @require_api_key
 def get_metrics():
     try:
