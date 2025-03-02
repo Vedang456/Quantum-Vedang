@@ -1,3 +1,6 @@
+## Dont use this file unless you have already configured your laptop based on Docker + Kubernetes
+
+
 #!/bin/bash
 
 # Script to automate setup, build, run, and test Quantum Intelligence apps
